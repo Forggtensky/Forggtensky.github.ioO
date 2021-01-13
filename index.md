@@ -51,7 +51,7 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 下图是Backbone采用resnet50：
 
-![image-20210104102110322](image-20210104102110322.png)
+![image-20210104102110322](images/image-20210104102110322.png)
 
 
 
@@ -65,7 +65,7 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 - SSD采用金字塔结构，即利用了conv4-3/conv-7/conv6-2/conv7-2/conv8_2/conv9_2这些大小不同的feature maps，在多个feature maps上同时进行softmax分类和位置回归
 - SSD还加入了Prior box
 
-<img src="image-20210104102206033.png" alt="image-20210104102206033" style="zoom: 50%;" />
+<img src="images/image-20210104102206033.png" alt="image-20210104102206033" style="zoom: 50%;" />
 
 
 
@@ -73,11 +73,11 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 ​		在SSD300中引入了Prior Box，实际上与Faster RCNN Anchor非常类似，就是一些目标的预选框，后续通过classification+bounding box regression获得真实目标的位置。
 
-<img src="image-20210104103008605.png" alt="image-20210104103008605" style="zoom: 33%;" />
+<img src="images/image-20210104103008605.png" alt="image-20210104103008605" style="zoom: 33%;" />
 
 可见：**SSD使用感受野小的feature map(8x8)检测小目标，使用感受野大的feature map(4x4)检测更大目标**
 
-<img src="image-20210104103332623.png" alt="image-20210104103332623" style="zoom: 33%;" />
+<img src="images/image-20210104103332623.png" alt="image-20210104103332623" style="zoom: 33%;" />
 
 在SSD中，先验框的尺寸都是**人工预设**的，不过在yoloV2中，先验框的尺寸是由初始的标签，经过**kmeans聚类**，得到一系列尺寸。
 
@@ -85,7 +85,7 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 Prior box的使用：
 
-<img src="image-20210104103732786.png" alt="image-20210104103732786" style="zoom: 50%;" />
+<img src="images/image-20210104103732786.png" alt="image-20210104103732786" style="zoom: 50%;" />
 
 以conv4_3为例，在此分为了3条线路：
 
@@ -126,15 +126,15 @@ decode_bbox->set_xmin(
 
 ​	**bottom blob = [batch_num, channel, height, width]**，经过conv4_3_norm_mbox_conf_perm后的caffe blob为：**top blob = [batch_num, height, width, channel]**
 
-<img src="image-20210104110631140.png" alt="image-20210104110631140" style="zoom: 50%;" />
+<img src="images/image-20210104110631140.png" alt="image-20210104110631140" style="zoom: 50%;" />
 
 ​		以conv4_3和fc7为例分析SSD是如何将不同size的feature map组合在一起进行prediction。图7展示了conv4_3和fc7合并在一起的过程中caffe blob shape变化。
 
-<img src="image-20210104112708175.png" alt="image-20210104112708175" style="zoom: 50%;" />
+<img src="images/image-20210104112708175.png" alt="image-20210104112708175" style="zoom: 50%;" />
 
 SSD一次判断priorbox到底是背景 or 是20种目标类别之一，相当于将Faster R-CNN的RPN与后续proposal再分类进行了整合。
 
-![image-20210104133535552](image-20210104133535552.png)
+![image-20210104133535552](images/image-20210104133535552.png)
 
 
 
@@ -152,7 +152,7 @@ SSD一次判断priorbox到底是背景 or 是20种目标类别之一，相当于
 
 ## 5、训练过程
 
-<img src="image-20210104134056487.png" alt="image-20210104134056487" style="zoom:50%;" />
+<img src="images/image-20210104134056487.png" alt="image-20210104134056487" style="zoom:50%;" />
 
 对于SSD，虽然paper中指出采用了所谓的“multibox loss”，但是依然可以清晰看到SSD loss分为了**confidence loss**和location loss(**bouding box regression loss**)两部分，其中N是match到GT（Ground Truth）的prior box数量；
 
@@ -160,11 +160,11 @@ SSD一次判断priorbox到底是背景 or 是20种目标类别之一，相当于
 
 SSD中的confidence loss是典型的softmax loss：
 
-<img src="image-20210104134114624.png" alt="image-20210104134114624" style="zoom: 50%;" />
+<img src="images/image-20210104134114624.png" alt="image-20210104134114624" style="zoom: 50%;" />
 
 其中，Xij = {1，0}
 
-<img src="image-20210104134820779.png" alt="image-20210104134820779" style="zoom:50%;" />
+<img src="images/image-20210104134820779.png" alt="image-20210104134820779" style="zoom:50%;" />
 
 **匹配策略：**
 
@@ -444,7 +444,7 @@ class DefaultBoxes(object):
 
 生成默认框示意图：
 
-<img src="image-20210105233109078.png" alt="image-20210105233109078" style="zoom: 33%;" />
+<img src="images/image-20210105233109078.png" alt="image-20210105233109078" style="zoom: 33%;" />
 
 
 
@@ -503,11 +503,4 @@ tensor([[0, 1, 2],
         [0, 1, 2],
         [0, 1, 2]])
 ```
-
-## 图表：
-
-
-![img](20180731142356127)
-
-![img](20180731142428879-1610282832992)
 
